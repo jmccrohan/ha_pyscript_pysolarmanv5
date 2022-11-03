@@ -133,14 +133,14 @@ def pysolarmanv5_write_holding_register(register_addr, value):
             try:
                 log.info("write_holding_register(%s, %s)", register_addr, value)
                 pysolarmanv5.write_holding_register(
-                    register_value=register_addr, value=value
+                    register_addr=register_addr, value=value
                 )
             except Exception as e:
                 continue
             else:
                 break
         else:
-            log.error("Failed to write_holding_register(%s, %s", register_addr, value)
+            log.error("Failed to write_holding_register(%s, %s)", register_addr, value)
 
 
 @service
@@ -173,7 +173,7 @@ def pysolarmanv5_write_multiple_holding_registers(register_addr, values):
                     "write_multiple_holding_registers(%s, %s)", register_addr, values
                 )
                 pysolarmanv5.write_multiple_holding_registers(
-                    register_value=register_addr, values=values
+                    register_addr=register_addr, values=values
                 )
             except Exception as e:
                 continue
@@ -181,7 +181,7 @@ def pysolarmanv5_write_multiple_holding_registers(register_addr, values):
                 break
         else:
             log.error(
-                "Failed to write_multiple_holding_registers(%s, %s",
+                "Failed to write_multiple_holding_registers(%s, %s)",
                 register_addr,
                 values,
             )
