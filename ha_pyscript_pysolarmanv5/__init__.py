@@ -23,7 +23,7 @@ def get_pysolarmanv5_instance():
                 v5_error_correction=v5_error_correction,
             )
         except Exception as e:
-            log.info("Connection attempt failed: %s", e)
+            log.warning("Inverter connection attempt failed: %s", e)
             continue
         else:
             log.info("Connected to inverter")
@@ -33,7 +33,7 @@ def get_pysolarmanv5_instance():
 
 
 @service
-def pysolarmanv5_read_holding_registers(register_addr, quantity):
+def pysolarmanv5_read_holding_registers(register_addr, quantity, sensor):
     """yaml
     name: pysolarmanv5.read_holding_registers()
     description: Read Holding Register (Modbus Function Code 3)
@@ -50,20 +50,39 @@ def pysolarmanv5_read_holding_registers(register_addr, quantity):
         selector:
          number:
              mode: box
+      sensor:
+        description: sensor to store Modbus value
+        required: true
+        default: sensor.pysolarmanv5_value
+        selector:
+         text:
+             type: text
     """
     pysolarmanv5 = get_pysolarmanv5_instance()
     if pysolarmanv5 is not None:
         for attempt in range(retry_attempts):
             try:
-                log.info("read_holding_registers(%s, %s)", register_addr, quantity)
                 log.info(
-                    pysolarmanv5.read_holding_registers(
-                        register_addr=register_addr, quantity=quantity
-                    )
+                    "read_holding_registers(%s, %s) into %s",
+                    register_addr,
+                    quantity,
+                    sensor,
+                )
+                value = pysolarmanv5.read_holding_registers(
+                    register_addr=register_addr, quantity=quantity
                 )
             except Exception as e:
+                log.info("Caught error: %s", e)
                 continue
             else:
+                state.set(
+                    sensor,
+                    value=value,
+                    new_attributes={
+                        "pysolarmanv5_register": register_addr,
+                        "quantity": quantity,
+                    },
+                )
                 break
         else:
             log.error(
@@ -72,7 +91,7 @@ def pysolarmanv5_read_holding_registers(register_addr, quantity):
 
 
 @service
-def pysolarmanv5_read_input_registers(register_addr, quantity):
+def pysolarmanv5_read_input_registers(register_addr, quantity, sensor):
     """yaml
     name: pysolarmanv5.read_input_registers()
     description: Read Input Register (Modbus Function Code 4)
@@ -89,20 +108,39 @@ def pysolarmanv5_read_input_registers(register_addr, quantity):
         selector:
          number:
              mode: box
+      sensor:
+        description: sensor to store Modbus value
+        required: true
+        default: sensor.pysolarmanv5_value
+        selector:
+         text:
+             type: text
     """
     pysolarmanv5 = get_pysolarmanv5_instance()
     if pysolarmanv5 is not None:
         for attempt in range(retry_attempts):
             try:
-                log.info("read_input_registers(%s, %s)", register_addr, quantity)
                 log.info(
-                    pysolarmanv5.read_input_registers(
-                        register_addr=register_addr, quantity=quantity
-                    )
+                    "read_input_registers(%s, %s) into %s",
+                    register_addr,
+                    quantity,
+                    sensor,
+                )
+                value = pysolarmanv5.read_input_registers(
+                    register_addr=register_addr, quantity=quantity
                 )
             except Exception as e:
+                log.info("Caught error: %s", e)
                 continue
             else:
+                state.set(
+                    sensor,
+                    value=value,
+                    new_attributes={
+                        "pysolarmanv5_register": register_addr,
+                        "quantity": quantity,
+                    },
+                )
                 break
         else:
             log.error("Failed to read_input_registers(%s, %s)", register_addr, quantity)
@@ -136,6 +174,12 @@ def pysolarmanv5_write_holding_register(register_addr, value):
                     register_addr=register_addr, value=value
                 )
             except Exception as e:
+                log.warning(
+                    "write_holding_register(%s, %s) - caught error: %s",
+                    register_addr,
+                    value,
+                    e,
+                )
                 continue
             else:
                 break
@@ -176,6 +220,12 @@ def pysolarmanv5_write_multiple_holding_registers(register_addr, values):
                     register_addr=register_addr, values=values
                 )
             except Exception as e:
+                log.warning(
+                    "write_multiple_holding_registers(%s, %s) - caught error: %s",
+                    register_addr,
+                    values,
+                    e,
+                )
                 continue
             else:
                 break
