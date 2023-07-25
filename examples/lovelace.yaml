@@ -1,0 +1,47 @@
+type: vertical-stack
+cards:
+  - type: entities
+    entities:
+      - entity: sensor.solis_storage_control_mode
+    show_header_toggle: false
+  - type: horizontal-stack
+    cards:
+      - type: custom:button-card
+        name: Self Use
+        icon: mdi:home-battery-outline
+        size: 20%
+        tap_action:
+          action: call-service
+          service: pyscript.pysolarmanv5_write_holding_register
+          service_data:
+            register_addr: 43110
+            value: 33
+      - type: custom:button-card
+        name: Feed In Priority
+        icon: mdi:home-export-outline
+        size: 20%
+        tap_action:
+          action: call-service
+          service: pyscript.pysolarmanv5_write_holding_register
+          service_data:
+            register_addr: 43110
+            value: 96
+      - type: custom:button-card
+        name: Time of Use
+        icon: mdi:home-clock-outline
+        size: 20%
+        tap_action:
+          action: call-service
+          service: pyscript.pysolarmanv5_write_holding_register
+          service_data:
+            register_addr: 43110
+            value: 35
+  - type: entities
+    entities:
+      - entity: input_number.solis_battery_charge_current
+      - entity: input_datetime.solis_charge_period_1_start
+      - entity: input_datetime.solis_charge_period_1_end
+      - entity: input_number.solis_battery_discharge_current
+      - entity: input_datetime.solis_discharge_period_1_start
+      - entity: input_datetime.solis_discharge_period_1_end
+      - entity: script.solis_write_time_of_use_settings

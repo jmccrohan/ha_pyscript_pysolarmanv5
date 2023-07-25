@@ -1,0 +1,28 @@
+alias: Solis Write Time of Use Settings
+sequence:
+  - service: pyscript.pysolarmanv5_write_multiple_holding_registers
+    data:
+      register_addr: 43141
+      values:
+        - "{{ '%.0f' | format(states('input_number.solis_battery_charge_current')| float * 10) }}"
+        - "{{ '%.0f' | format(states('input_number.solis_battery_discharge_current')| float * 10) }}"
+    alias: Write Charge/Discharge Current
+  - service: pyscript.pysolarmanv5_write_multiple_holding_registers
+    data:
+      register_addr: 43143
+      values:
+        - "{{state_attr('input_datetime.solis_charge_period_1_start', 'hour')}}"
+        - "{{state_attr('input_datetime.solis_charge_period_1_start', 'minute')}}"
+        - "{{state_attr('input_datetime.solis_charge_period_1_end', 'hour')}}"
+        - "{{state_attr('input_datetime.solis_charge_period_1_end', 'minute')}}"
+    alias: Write Charge Periods
+  - service: pyscript.pysolarmanv5_write_multiple_holding_registers
+    data:
+      register_addr: 43147
+      values:
+        - "{{state_attr('input_datetime.solis_discharge_period_1_start', 'hour')}}"
+        - "{{state_attr('input_datetime.solis_discharge_period_1_start', 'minute')}}"
+        - "{{state_attr('input_datetime.solis_discharge_period_1_end', 'hour')}}"
+        - "{{state_attr('input_datetime.solis_discharge_period_1_end', 'minute')}}"
+    alias: Write Discharge Periods
+mode: single

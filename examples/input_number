@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "minor_version": 1,
+  "key": "input_number",
+  "data": {
+    "items": [
+      {
+        "min": 0.0,
+        "max": 100.0,
+        "icon": "mdi:current-dc",
+        "name": "Solis Battery Charge Current",
+        "step": 12.5,
+        "unit_of_measurement": "A",
+        "mode": "slider",
+        "id": "solis_battery_charge_current"
+      },
+      {
+        "id": "solis_battery_discharge_current",
+        "min": 0.0,
+        "max": 100.0,
+        "name": "Solis Battery Discharge Current",
+        "icon": "mdi:current-dc",
+        "mode": "slider",
+        "unit_of_measurement": "A",
+        "step": 12.5
+      }
+    ]
+  }
+}

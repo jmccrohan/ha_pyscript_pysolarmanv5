@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "minor_version": 1,
+  "key": "input_datetime",
+  "data": {
+    "items": [
+      {
+        "has_time": true,
+        "has_date": false,
+        "name": "Solis Charge Period 1 Start",
+        "icon": "mdi:clock-start",
+        "id": "charge_period_1_start"
+      },
+      {
+        "id": "charge_period_1_end",
+        "has_time": true,
+        "has_date": false,
+        "name": "Solis Charge Period 1 End",
+        "icon": "mdi:clock-end"
+      },
+      {
+        "has_time": true,
+        "has_date": false,
+        "name": "Solis Discharge Period 1 Start",
+        "icon": "mdi:clock-start",
+        "id": "discharge_period_1_start"
+      },
+      {
+        "id": "discharge_period_1_end",
+        "has_time": true,
+        "has_date": false,
+        "name": "Solis Discharge Period 1 End",
+        "icon": "mdi:clock-end"
+      }
+    ]
+  }
+}
